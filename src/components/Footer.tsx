@@ -36,7 +36,7 @@ const Footer = () => {
               <img 
                 src={logo} 
                 alt="AllSafe Secure" 
-                className="h-12 w-auto brightness-0 invert"
+                className="h-12 w-auto"
               />
             </a>
             <p className="text-muted-foreground text-sm mb-6 max-w-sm">
