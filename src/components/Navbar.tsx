@@ -23,7 +23,7 @@ const Navbar = () => {
             <img 
               src={logo} 
               alt="AllSafe Secure" 
-              className="h-10 lg:h-12 w-auto transition-transform duration-300 group-hover:scale-105 brightness-0 invert"
+              className="h-10 lg:h-12 w-auto transition-transform duration-300 group-hover:scale-105"
             />
           </a>
 
