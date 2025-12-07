@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Shield, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import logo from "@/assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,15 +19,12 @@ const Navbar = () => {
       <nav className="container mx-auto px-4 lg:px-8">
         <div className="flex items-center justify-between h-16 lg:h-20">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2 group">
-            <div className="relative">
-              <Shield className="h-8 w-8 text-primary transition-transform duration-300 group-hover:scale-110" />
-              <div className="absolute inset-0 bg-primary/20 blur-lg rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-            <span className="text-xl font-bold">
-              <span className="text-foreground">AllSafe</span>
-              <span className="text-primary">secure</span>
-            </span>
+          <a href="/" className="flex items-center group">
+            <img 
+              src={logo} 
+              alt="AllSafe Secure" 
+              className="h-10 lg:h-12 w-auto transition-transform duration-300 group-hover:scale-105 brightness-0 invert"
+            />
           </a>
 
           {/* Desktop Navigation */}
