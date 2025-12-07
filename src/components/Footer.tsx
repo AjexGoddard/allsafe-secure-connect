@@ -1,4 +1,5 @@
-import { Shield, Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import { Linkedin, Twitter, Mail, Phone, MapPin } from "lucide-react";
+import logo from "@/assets/logo.png";
 
 const Footer = () => {
   const footerLinks = {
@@ -31,12 +32,12 @@ const Footer = () => {
         <div className="grid md:grid-cols-2 lg:grid-cols-5 gap-12 mb-12">
           {/* Brand */}
           <div className="lg:col-span-2">
-            <a href="/" className="flex items-center gap-2 mb-4">
-              <Shield className="h-8 w-8 text-primary" />
-              <span className="text-xl font-bold">
-                <span className="text-foreground">AllSafe</span>
-                <span className="text-primary">secure</span>
-              </span>
+            <a href="/" className="flex items-center mb-4">
+              <img 
+                src={logo} 
+                alt="AllSafe Secure" 
+                className="h-12 w-auto brightness-0 invert"
+              />
             </a>
             <p className="text-muted-foreground text-sm mb-6 max-w-sm">
               Enterprise-grade Managed Detection and Response services protecting businesses from modern cyber threats 24/7.
