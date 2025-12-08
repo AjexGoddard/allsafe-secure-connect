@@ -6,6 +6,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { motion } from "framer-motion";
 import { toast } from "sonner";
+import { supabase } from "@/integrations/supabase/client";
 
 const LeadForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -22,12 +23,40 @@ const LeadForm = () => {
     e.preventDefault();
     setIsSubmitting(true);
     
-    // Simulate form submission
-    await new Promise((resolve) => setTimeout(resolve, 1500));
-    
-    setIsSubmitting(false);
-    setIsSubmitted(true);
-    toast.success("Thank you! Our security team will contact you within 24 hours.");
+    try {
+      // Save lead to database
+      const { data: lead, error } = await supabase
+        .from("lead_submissions")
+        .insert({
+          name: formData.name,
+          email: formData.email,
+          phone: formData.phone || null,
+          endpoints: formData.endpoints || null,
+          budget: formData.budget || null,
+        })
+        .select()
+        .single();
+
+      if (error) {
+        console.error("Failed to submit lead:", error);
+        toast.error("Failed to submit form. Please try again.");
+        setIsSubmitting(false);
+        return;
+      }
+
+      // Trigger email notification (fire and forget)
+      supabase.functions.invoke("send-lead-email", {
+        body: { leadId: lead.id },
+      }).catch(console.error);
+
+      setIsSubmitting(false);
+      setIsSubmitted(true);
+      toast.success("Thank you! Our security team will contact you within 24 hours.");
+    } catch (err) {
+      console.error("Error submitting form:", err);
+      toast.error("Something went wrong. Please try again.");
+      setIsSubmitting(false);
+    }
   };
 
   if (isSubmitted) {
