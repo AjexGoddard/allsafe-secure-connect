@@ -2,16 +2,20 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { Link, useLocation } from "react-router-dom";
 import logo from "@/assets/logo.png";
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const location = useLocation();
+  const isHomePage = location.pathname === "/";
 
   const navLinks = [
-    { name: "Services", href: "#services" },
-    { name: "Why MDR", href: "#why-mdr" },
-    { name: "About", href: "#about" },
-    { name: "Contact", href: "#contact" },
+    { name: "Services", href: isHomePage ? "#services" : "/#services" },
+    { name: "Why MDR", href: isHomePage ? "#why-mdr" : "/#why-mdr" },
+    { name: "Case Studies", href: "/case-studies", isRoute: true },
+    { name: "About", href: isHomePage ? "#about" : "/#about" },
+    { name: "Contact", href: isHomePage ? "#contact" : "/#contact" },
   ];
 
   return (
@@ -30,13 +34,23 @@ const Navbar = () => {
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center gap-8">
             {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-medium"
-              >
-                {link.name}
-              </a>
+              link.isRoute ? (
+                <Link
+                  key={link.name}
+                  to={link.href}
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-medium"
+                >
+                  {link.name}
+                </Link>
+              ) : (
+                <a
+                  key={link.name}
+                  href={link.href}
+                  className="text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-medium"
+                >
+                  {link.name}
+                </a>
+              )
             ))}
           </div>
 
@@ -71,14 +85,25 @@ const Navbar = () => {
             >
               <div className="py-4 space-y-4">
                 {navLinks.map((link) => (
-                  <a
-                    key={link.name}
-                    href={link.href}
-                    className="block text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-medium py-2"
-                    onClick={() => setIsOpen(false)}
-                  >
-                    {link.name}
-                  </a>
+                  link.isRoute ? (
+                    <Link
+                      key={link.name}
+                      to={link.href}
+                      className="block text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-medium py-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.name}
+                    </Link>
+                  ) : (
+                    <a
+                      key={link.name}
+                      href={link.href}
+                      className="block text-muted-foreground hover:text-foreground transition-colors duration-300 text-sm font-medium py-2"
+                      onClick={() => setIsOpen(false)}
+                    >
+                      {link.name}
+                    </a>
+                  )
                 ))}
                 <div className="flex flex-col gap-2 pt-4 border-t border-border">
                   <Button variant="ghost" size="sm" className="w-full justify-start">
