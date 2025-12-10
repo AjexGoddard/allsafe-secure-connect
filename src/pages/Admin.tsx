@@ -3,11 +3,13 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, FileText, Settings, Mail } from "lucide-react";
+import { LogOut, Users, FileText, Mail, Image, BookOpen } from "lucide-react";
 import logo from "@/assets/logo.png";
 import LeadsManager from "@/components/admin/LeadsManager";
 import ContentManager from "@/components/admin/ContentManager";
 import SmtpSettings from "@/components/admin/SmtpSettings";
+import TrustedLogosManager from "@/components/admin/TrustedLogosManager";
+import CaseStudiesManager from "@/components/admin/CaseStudiesManager";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -62,18 +64,26 @@ const Admin = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="leads" className="space-y-6">
-          <TabsList className="grid w-full max-w-lg grid-cols-3">
+          <TabsList className="grid w-full max-w-2xl grid-cols-5">
             <TabsTrigger value="leads" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
-              Leads
+              <span className="hidden sm:inline">Leads</span>
             </TabsTrigger>
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="w-4 h-4" />
-              Content
+              <span className="hidden sm:inline">Content</span>
+            </TabsTrigger>
+            <TabsTrigger value="logos" className="flex items-center gap-2">
+              <Image className="w-4 h-4" />
+              <span className="hidden sm:inline">Logos</span>
+            </TabsTrigger>
+            <TabsTrigger value="casestudies" className="flex items-center gap-2">
+              <BookOpen className="w-4 h-4" />
+              <span className="hidden sm:inline">Case Studies</span>
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
-              SMTP
+              <span className="hidden sm:inline">SMTP</span>
             </TabsTrigger>
           </TabsList>
 
@@ -83,6 +93,14 @@ const Admin = () => {
 
           <TabsContent value="content">
             <ContentManager />
+          </TabsContent>
+
+          <TabsContent value="logos">
+            <TrustedLogosManager />
+          </TabsContent>
+
+          <TabsContent value="casestudies">
+            <CaseStudiesManager />
           </TabsContent>
 
           <TabsContent value="settings">
