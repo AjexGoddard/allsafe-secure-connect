@@ -14,6 +14,75 @@ export type Database = {
   }
   public: {
     Tables: {
+      case_studies: {
+        Row: {
+          challenge: string
+          company: string
+          created_at: string
+          display_order: number
+          icon: string
+          id: string
+          industry: string
+          is_active: boolean
+          quote: string
+          quote_author: string
+          quote_role: string
+          result1_label: string
+          result1_metric: string
+          result2_label: string
+          result2_metric: string
+          result3_label: string
+          result3_metric: string
+          solution: string
+          tags: string[]
+          updated_at: string
+        }
+        Insert: {
+          challenge: string
+          company: string
+          created_at?: string
+          display_order?: number
+          icon?: string
+          id?: string
+          industry: string
+          is_active?: boolean
+          quote: string
+          quote_author: string
+          quote_role: string
+          result1_label: string
+          result1_metric: string
+          result2_label: string
+          result2_metric: string
+          result3_label: string
+          result3_metric: string
+          solution: string
+          tags?: string[]
+          updated_at?: string
+        }
+        Update: {
+          challenge?: string
+          company?: string
+          created_at?: string
+          display_order?: number
+          icon?: string
+          id?: string
+          industry?: string
+          is_active?: boolean
+          quote?: string
+          quote_author?: string
+          quote_role?: string
+          result1_label?: string
+          result1_metric?: string
+          result2_label?: string
+          result2_metric?: string
+          result3_label?: string
+          result3_metric?: string
+          solution?: string
+          tags?: string[]
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lead_submissions: {
         Row: {
           budget: string | null
@@ -116,6 +185,36 @@ export type Database = {
           port?: number
           updated_at?: string
           username?: string
+        }
+        Relationships: []
+      }
+      trusted_logos: {
+        Row: {
+          created_at: string
+          display_order: number
+          id: string
+          is_active: boolean
+          logo_url: string | null
+          name: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          display_order?: number
+          id?: string
+          is_active?: boolean
+          logo_url?: string | null
+          name?: string
+          updated_at?: string
         }
         Relationships: []
       }
