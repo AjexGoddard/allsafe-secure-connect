@@ -27,28 +27,6 @@ const About = () => {
     },
   ];
 
-  const team = [
-    {
-      name: "Sarah Chen",
-      role: "Chief Executive Officer",
-      bio: "Former CISO at Fortune 100 company with 20+ years in cybersecurity leadership.",
-    },
-    {
-      name: "Marcus Rodriguez",
-      role: "Chief Technology Officer",
-      bio: "Previously led threat intelligence at a major defense contractor. PhD in Computer Science from MIT.",
-    },
-    {
-      name: "Emily Watson",
-      role: "VP of Security Operations",
-      bio: "Built and scaled SOC teams for multiple unicorn startups. CISSP, CISM certified.",
-    },
-    {
-      name: "David Kim",
-      role: "Head of Threat Research",
-      bio: "Published researcher with 50+ CVEs discovered. Former NSA cyber operations specialist.",
-    },
-  ];
 
   return (
     <section id="about" className="py-24 bg-background relative overflow-hidden">
@@ -208,36 +186,6 @@ const About = () => {
           </div>
         </motion.div>
 
-        {/* Leadership Team */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ delay: 0.4 }}
-        >
-          <h3 className="text-2xl md:text-3xl font-bold text-foreground text-center mb-12">
-            Leadership Team
-          </h3>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {team.map((member, index) => (
-              <div
-                key={member.name}
-                className="p-6 rounded-2xl bg-card border border-border text-center group hover:border-primary/50 transition-colors duration-300"
-              >
-                <div className="w-20 h-20 rounded-full bg-gradient-to-br from-primary/30 to-accent/30 mx-auto mb-4 flex items-center justify-center">
-                  <Users className="w-10 h-10 text-primary/60" />
-                </div>
-                <h4 className="text-lg font-bold text-foreground mb-1">
-                  {member.name}
-                </h4>
-                <div className="text-primary text-sm font-medium mb-3">
-                  {member.role}
-                </div>
-                <p className="text-muted-foreground text-sm">{member.bio}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );
