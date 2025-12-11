@@ -3,13 +3,17 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Button } from "@/components/ui/button";
-import { LogOut, Users, FileText, Mail, Image, BookOpen } from "lucide-react";
+import { LogOut, Users, FileText, Mail, Image, BookOpen, Briefcase, Settings, UserCog, FormInput } from "lucide-react";
 import logo from "@/assets/logo.png";
 import LeadsManager from "@/components/admin/LeadsManager";
 import ContentManager from "@/components/admin/ContentManager";
 import SmtpSettings from "@/components/admin/SmtpSettings";
 import TrustedLogosManager from "@/components/admin/TrustedLogosManager";
 import CaseStudiesManager from "@/components/admin/CaseStudiesManager";
+import ServicesManager from "@/components/admin/ServicesManager";
+import FooterManager from "@/components/admin/FooterManager";
+import FormConfigManager from "@/components/admin/FormConfigManager";
+import UserManager from "@/components/admin/UserManager";
 
 const Admin = () => {
   const navigate = useNavigate();
@@ -64,7 +68,7 @@ const Admin = () => {
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
         <Tabs defaultValue="leads" className="space-y-6">
-          <TabsList className="grid w-full max-w-2xl grid-cols-5">
+          <TabsList className="flex flex-wrap h-auto gap-1 p-1">
             <TabsTrigger value="leads" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
               <span className="hidden sm:inline">Leads</span>
@@ -72,6 +76,18 @@ const Admin = () => {
             <TabsTrigger value="content" className="flex items-center gap-2">
               <FileText className="w-4 h-4" />
               <span className="hidden sm:inline">Content</span>
+            </TabsTrigger>
+            <TabsTrigger value="services" className="flex items-center gap-2">
+              <Briefcase className="w-4 h-4" />
+              <span className="hidden sm:inline">Services</span>
+            </TabsTrigger>
+            <TabsTrigger value="form" className="flex items-center gap-2">
+              <FormInput className="w-4 h-4" />
+              <span className="hidden sm:inline">Form</span>
+            </TabsTrigger>
+            <TabsTrigger value="footer" className="flex items-center gap-2">
+              <Settings className="w-4 h-4" />
+              <span className="hidden sm:inline">Footer</span>
             </TabsTrigger>
             <TabsTrigger value="logos" className="flex items-center gap-2">
               <Image className="w-4 h-4" />
@@ -81,7 +97,11 @@ const Admin = () => {
               <BookOpen className="w-4 h-4" />
               <span className="hidden sm:inline">Case Studies</span>
             </TabsTrigger>
-            <TabsTrigger value="settings" className="flex items-center gap-2">
+            <TabsTrigger value="users" className="flex items-center gap-2">
+              <UserCog className="w-4 h-4" />
+              <span className="hidden sm:inline">Users</span>
+            </TabsTrigger>
+            <TabsTrigger value="smtp" className="flex items-center gap-2">
               <Mail className="w-4 h-4" />
               <span className="hidden sm:inline">SMTP</span>
             </TabsTrigger>
@@ -95,6 +115,18 @@ const Admin = () => {
             <ContentManager />
           </TabsContent>
 
+          <TabsContent value="services">
+            <ServicesManager />
+          </TabsContent>
+
+          <TabsContent value="form">
+            <FormConfigManager />
+          </TabsContent>
+
+          <TabsContent value="footer">
+            <FooterManager />
+          </TabsContent>
+
           <TabsContent value="logos">
             <TrustedLogosManager />
           </TabsContent>
@@ -103,7 +135,11 @@ const Admin = () => {
             <CaseStudiesManager />
           </TabsContent>
 
-          <TabsContent value="settings">
+          <TabsContent value="users">
+            <UserManager />
+          </TabsContent>
+
+          <TabsContent value="smtp">
             <SmtpSettings />
           </TabsContent>
         </Tabs>

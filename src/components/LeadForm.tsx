@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -8,9 +8,44 @@ import { motion } from "framer-motion";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 
+interface FormConfig {
+  form_title: string;
+  form_subtitle: string;
+  submit_button_text: string;
+  success_title: string;
+  success_message: string;
+  currency_symbol: string;
+  budget_options: { value: string; label: string }[];
+  endpoint_options: { value: string; label: string }[];
+}
+
+const defaultConfig: FormConfig = {
+  form_title: "Get a Free Security Assessment",
+  form_subtitle: "Fill out the form and our experts will contact you",
+  submit_button_text: "Get Free Assessment",
+  success_title: "Request Received!",
+  success_message: "Our security experts will reach out within 24 hours to discuss your MDR needs.",
+  currency_symbol: "$",
+  budget_options: [
+    { value: "under-5k", label: "Under 5,000" },
+    { value: "5k-10k", label: "5,000 - 10,000" },
+    { value: "10k-25k", label: "10,000 - 25,000" },
+    { value: "25k-50k", label: "25,000 - 50,000" },
+    { value: "50k+", label: "50,000+" },
+  ],
+  endpoint_options: [
+    { value: "1-50", label: "1-50 endpoints" },
+    { value: "51-200", label: "51-200 endpoints" },
+    { value: "201-500", label: "201-500 endpoints" },
+    { value: "501-1000", label: "501-1000 endpoints" },
+    { value: "1000+", label: "1000+ endpoints" },
+  ],
+};
+
 const LeadForm = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [config, setConfig] = useState<FormConfig>(defaultConfig);
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -19,12 +54,35 @@ const LeadForm = () => {
     budget: "",
   });
 
+  useEffect(() => {
+    const fetchConfig = async () => {
+      const { data } = await supabase
+        .from("form_config")
+        .select("*")
+        .limit(1)
+        .maybeSingle();
+      
+      if (data) {
+        setConfig({
+          form_title: data.form_title,
+          form_subtitle: data.form_subtitle,
+          submit_button_text: data.submit_button_text,
+          success_title: data.success_title,
+          success_message: data.success_message,
+          currency_symbol: data.currency_symbol,
+          budget_options: data.budget_options as { value: string; label: string }[],
+          endpoint_options: data.endpoint_options as { value: string; label: string }[],
+        });
+      }
+    };
+    fetchConfig();
+  }, []);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
     
     try {
-      // Save lead to database
       const { data: lead, error } = await supabase
         .from("lead_submissions")
         .insert({
@@ -44,7 +102,6 @@ const LeadForm = () => {
         return;
       }
 
-      // Trigger email notification (fire and forget)
       supabase.functions.invoke("send-lead-email", {
         body: { leadId: lead.id },
       }).catch(console.error);
@@ -67,10 +124,8 @@ const LeadForm = () => {
         className="glass rounded-2xl p-8 border-glow text-center"
       >
         <CheckCircle2 className="w-16 h-16 text-success mx-auto mb-4" />
-        <h3 className="text-2xl font-bold text-foreground mb-2">Request Received!</h3>
-        <p className="text-muted-foreground">
-          Our security experts will reach out within 24 hours to discuss your MDR needs.
-        </p>
+        <h3 className="text-2xl font-bold text-foreground mb-2">{config.success_title}</h3>
+        <p className="text-muted-foreground">{config.success_message}</p>
       </motion.div>
     );
   }
@@ -84,8 +139,8 @@ const LeadForm = () => {
       className="glass rounded-2xl p-6 lg:p-8 border-glow space-y-5"
     >
       <div className="text-center mb-6">
-        <h3 className="text-xl font-semibold text-foreground mb-1">Get a Free Security Assessment</h3>
-        <p className="text-muted-foreground text-sm">Fill out the form and our experts will contact you</p>
+        <h3 className="text-xl font-semibold text-foreground mb-1">{config.form_title}</h3>
+        <p className="text-muted-foreground text-sm">{config.form_subtitle}</p>
       </div>
 
       <div className="space-y-4">
@@ -134,11 +189,11 @@ const LeadForm = () => {
               <SelectValue placeholder="Select endpoint range" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="1-50">1-50 endpoints</SelectItem>
-              <SelectItem value="51-200">51-200 endpoints</SelectItem>
-              <SelectItem value="201-500">201-500 endpoints</SelectItem>
-              <SelectItem value="501-1000">501-1000 endpoints</SelectItem>
-              <SelectItem value="1000+">1000+ endpoints</SelectItem>
+              {config.endpoint_options.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -153,11 +208,11 @@ const LeadForm = () => {
               <SelectValue placeholder="Select budget range" />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="under-5k">Under $5,000</SelectItem>
-              <SelectItem value="5k-10k">$5,000 - $10,000</SelectItem>
-              <SelectItem value="10k-25k">$10,000 - $25,000</SelectItem>
-              <SelectItem value="25k-50k">$25,000 - $50,000</SelectItem>
-              <SelectItem value="50k+">$50,000+</SelectItem>
+              {config.budget_options.map((option) => (
+                <SelectItem key={option.value} value={option.value}>
+                  {config.currency_symbol}{option.label}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
@@ -177,7 +232,7 @@ const LeadForm = () => {
           </span>
         ) : (
           <span className="flex items-center gap-2">
-            Get Free Assessment
+            {config.submit_button_text}
             <ArrowRight className="w-4 h-4" />
           </span>
         )}
