@@ -83,6 +83,48 @@ export type Database = {
         }
         Relationships: []
       }
+      form_config: {
+        Row: {
+          budget_options: Json
+          created_at: string
+          currency_symbol: string
+          endpoint_options: Json
+          form_subtitle: string
+          form_title: string
+          id: string
+          submit_button_text: string
+          success_message: string
+          success_title: string
+          updated_at: string
+        }
+        Insert: {
+          budget_options?: Json
+          created_at?: string
+          currency_symbol?: string
+          endpoint_options?: Json
+          form_subtitle?: string
+          form_title?: string
+          id?: string
+          submit_button_text?: string
+          success_message?: string
+          success_title?: string
+          updated_at?: string
+        }
+        Update: {
+          budget_options?: Json
+          created_at?: string
+          currency_symbol?: string
+          endpoint_options?: Json
+          form_subtitle?: string
+          form_title?: string
+          id?: string
+          submit_button_text?: string
+          success_message?: string
+          success_title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       lead_submissions: {
         Row: {
           budget: string | null
@@ -118,6 +160,39 @@ export type Database = {
           notes?: string | null
           phone?: string | null
           status?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      services: {
+        Row: {
+          created_at: string
+          description: string
+          display_order: number
+          icon: string
+          id: string
+          is_active: boolean
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          description: string
+          display_order?: number
+          icon?: string
+          id?: string
+          is_active?: boolean
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          description?: string
+          display_order?: number
+          icon?: string
+          id?: string
+          is_active?: boolean
+          title?: string
           updated_at?: string
         }
         Relationships: []
