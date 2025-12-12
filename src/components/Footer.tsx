@@ -37,7 +37,12 @@ const Footer = () => {
         const newContent: Partial<FooterContent> = {};
         data.forEach((item) => {
           const key = item.key as keyof FooterContent;
-          newContent[key] = typeof item.value === "string" ? item.value : JSON.stringify(item.value);
+          // Handle both {text: "value"} and plain string formats
+          if (typeof item.value === "object" && item.value !== null && "text" in item.value) {
+            newContent[key] = (item.value as { text: string }).text;
+          } else if (typeof item.value === "string") {
+            newContent[key] = item.value;
+          }
         });
         setContent((prev) => ({ ...prev, ...newContent }));
       }
