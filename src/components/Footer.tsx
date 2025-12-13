@@ -37,11 +37,29 @@ const Footer = () => {
         const newContent: Partial<FooterContent> = {};
         data.forEach((item) => {
           const key = item.key as keyof FooterContent;
-          // Handle both {text: "value"} and plain string formats
-          if (typeof item.value === "object" && item.value !== null && "text" in item.value) {
-            newContent[key] = (item.value as { text: string }).text;
-          } else if (typeof item.value === "string") {
-            newContent[key] = item.value;
+          let value = item.value;
+          
+          // Handle multiple levels of JSON stringification
+          if (typeof value === "string") {
+            try {
+              // Try to parse if it's a JSON string
+              let parsed = JSON.parse(value);
+              // Keep parsing if still a string (double-stringified)
+              while (typeof parsed === "string") {
+                parsed = JSON.parse(parsed);
+              }
+              // Extract text property if it exists
+              if (typeof parsed === "object" && parsed !== null && "text" in parsed) {
+                newContent[key] = parsed.text;
+              } else {
+                newContent[key] = String(parsed);
+              }
+            } catch {
+              // Not JSON, use as-is
+              newContent[key] = value;
+            }
+          } else if (typeof value === "object" && value !== null && "text" in value) {
+            newContent[key] = (value as { text: string }).text;
           }
         });
         setContent((prev) => ({ ...prev, ...newContent }));
